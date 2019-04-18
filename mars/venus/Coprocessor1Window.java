@@ -65,23 +65,39 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		   settings = Globals.getSettings();
          // Display registers in table contained in scroll pane.
          this.setLayout(new BorderLayout()); // table display will occupy entire width if widened
+         
+         
          table = new MyTippedJTable(new RegTableModel(setupWindow()));
          table.getColumnModel().getColumn(NAME_COLUMN).setPreferredWidth(20);
          table.getColumnModel().getColumn(FLOAT_COLUMN).setPreferredWidth(70);
          table.getColumnModel().getColumn(DOUBLE_COLUMN).setPreferredWidth(130);
       	// Display register values (String-ified) right-justified in mono font
-         table.getColumnModel().getColumn(NAME_COLUMN).setCellRenderer(new RegisterCellRenderer(MonoRightCellRenderer.MONOSPACED_PLAIN_12POINT, SwingConstants.LEFT));
-         table.getColumnModel().getColumn(FLOAT_COLUMN).setCellRenderer(new RegisterCellRenderer(MonoRightCellRenderer.MONOSPACED_PLAIN_12POINT, SwingConstants.RIGHT));
-         table.getColumnModel().getColumn(DOUBLE_COLUMN).setCellRenderer(new RegisterCellRenderer(MonoRightCellRenderer.MONOSPACED_PLAIN_12POINT, SwingConstants.RIGHT));
-         this.add(new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+         table.getColumnModel().getColumn(NAME_COLUMN).setCellRenderer(new RegisterCellRenderer(MonoRightCellRenderer.MONOSPACED_PLAIN_12POINT, SwingConstants.CENTER));
+         table.getColumnModel().getColumn(FLOAT_COLUMN).setCellRenderer(new RegisterCellRenderer(MonoRightCellRenderer.MONOSPACED_PLAIN_12POINT, SwingConstants.CENTER));
+         table.getColumnModel().getColumn(DOUBLE_COLUMN).setCellRenderer(new RegisterCellRenderer(MonoRightCellRenderer.MONOSPACED_PLAIN_12POINT, SwingConstants.CENTER));
+         table.getTableHeader().setBackground(new Color(0x3C3C33));
+         table.getTableHeader().setForeground(new Color(0xF9F9F6));
+         table.getTableHeader().setFont(CustomFont.CustomF());
+         table.setOpaque(false);
+         
+         JScrollPane JP = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+         JP.getViewport().setBackground(new Color(0x282B36) );
+         this.add(JP);
+         
       	// Display condition flags in panel below the registers
          JPanel flagsPane = new JPanel(new BorderLayout());
+         
+        
          flagsPane.setToolTipText(
                    "flags are used by certain floating point instructions, default flag is 0");
-         flagsPane.add(new JLabel("Condition Flags",JLabel.CENTER),BorderLayout.NORTH);
+         JLabel cf = new JLabel("Condition Flags",JLabel.CENTER);
+         cf.setForeground(Color.WHITE);
+         flagsPane.add(cf,BorderLayout.NORTH);
          int numFlags = Coprocessor1.getConditionFlagCount();
          conditionFlagCheckBox = new JCheckBox[numFlags];
          JPanel checksPane = new JPanel(new GridLayout(2,numFlags/2));
+         
+         
       	// Tried to get interior of checkboxes to be white while its label and 
       	// remaining background stays same background color.  Found example 
       	// like the following on the web, but does not appear to have any 
@@ -96,10 +112,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             conditionFlagCheckBox[i].addActionListener(this);
             conditionFlagCheckBox[i].setBackground(Color.WHITE);
             conditionFlagCheckBox[i].setToolTipText("checked == 1, unchecked == 0");
+          //  conditionFlagCheckBox[i].setForeground(Color.white);
             checksPane.add(conditionFlagCheckBox[i]);
+           
          }		
       	//UIManager.put("CheckBox.interiorBackground", saveBG);	
+        
+         flagsPane.setBackground(new Color(0x282B36));
          flagsPane.add(checksPane,BorderLayout.CENTER);
+         
          this.add(flagsPane, BorderLayout.SOUTH);
       }
     
@@ -314,29 +335,38 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          }
       	
           public Component getTableCellRendererComponent(JTable table, Object value, 
-                            boolean isSelected, boolean hasFocus, int row, int column) {									 
-            JLabel cell = (JLabel) super.getTableCellRendererComponent(table, value, 
-                                    isSelected, hasFocus, row, column);
+        	         
+        		  boolean isSelected, boolean hasFocus, int row, int column) {									 
+        	  JLabel cell = (JLabel) super.getTableCellRendererComponent(table, value, 
+                      isSelected, hasFocus, row, column);
+        	
+        	 
             cell.setFont(font);
             cell.setHorizontalAlignment(alignment);
-            if (settings.getRegistersHighlighting() && highlighting && row==highlightRow) {
-               cell.setBackground( settings.getColorSettingByPosition(Settings.REGISTER_HIGHLIGHT_BACKGROUND) );
-               cell.setForeground( settings.getColorSettingByPosition(Settings.REGISTER_HIGHLIGHT_FOREGROUND) );
-					cell.setFont( settings.getFontByPosition(Settings.REGISTER_HIGHLIGHT_FONT) );
-            } 
-            else if (row%2==0) {
-               cell.setBackground( settings.getColorSettingByPosition(Settings.EVEN_ROW_BACKGROUND) );
-               cell.setForeground( settings.getColorSettingByPosition(Settings.EVEN_ROW_FOREGROUND) );
-					cell.setFont( settings.getFontByPosition(Settings.EVEN_ROW_FONT) );
-            } 
-            else {
-               cell.setBackground( settings.getColorSettingByPosition(Settings.ODD_ROW_BACKGROUND) );
-               cell.setForeground( settings.getColorSettingByPosition(Settings.ODD_ROW_FOREGROUND) );				
-					cell.setFont( settings.getFontByPosition(Settings.ODD_ROW_FONT) );
-            }
-            return cell;
+	        	
+		         if (settings.getRegistersHighlighting() && highlighting && row==highlightRow) {
+		               cell.setBackground( new Color(0x282B36) );
+		               cell.setForeground( new Color(0xF9F9F6) );
+							cell.setFont( CustomFont.CustomF() );
+		            } 
+		            else if (row%2==0) {
+		            	 cell.setBackground( new Color(0x282B36) );
+		                 cell.setForeground( new Color(0xF9F9F6) );
+							cell.setFont( CustomFont.CustomF() );
+		            } 
+		            else {
+		            	 cell.setBackground( new Color(0x3D404A) );
+		                 cell.setForeground( new Color(0xF9F9F6) );				
+							cell.setFont( CustomFont.CustomF() );
+		            }
+		            
+        return cell;
+          		
+     		 ///
+           
          }  
-      }   
+      }
+   
    	
    	
    	/////////////////////////////////////////////////////////////////////////////

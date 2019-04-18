@@ -66,8 +66,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    	*/
    	
       public EditPane(VenusUI appFrame){
+    	 
          super(new BorderLayout());
+         UIManager.put("TabbedPane.selected", new Color(0x3D404A));   
+         
+
+         this.setForeground(Color.white);
          this.mainUI = appFrame;
+        
       	// user.dir, user's current working directory, is guaranteed to have a value
          currentDirectoryPath = System.getProperty("user.dir");
          // mainUI.editor = new Editor(mainUI);
@@ -76,7 +82,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          
          this.fileStatus = new FileStatus();      
          lineNumbers = new JLabel();
-      
+         lineNumbers.setForeground(new Color(0x282B36));
+         lineNumbers.setFont(CustomFont.CustomF());
          if (Globals.getSettings().getBooleanSetting(Settings.GENERIC_TEXT_EDITOR)) {
             this.sourceCode = new GenericTextArea(this, lineNumbers);
             
@@ -96,6 +103,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   	// This method is triggered when file contents added to document
                   	// upon opening, even though not edited by user.  The IF
                   	// statement will sense this situation and immediately return.
+                	  
                      if (FileStatus.get() == FileStatus.OPENING) { 
                         setFileStatus(FileStatus.NOT_EDITED); 
                         FileStatus.set(FileStatus.NOT_EDITED);
@@ -155,7 +163,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          lineNumbers.setVerticalAlignment(JLabel.TOP);
          lineNumbers.setText("");
          lineNumbers.setVisible(true);
-      	
+      	lineNumbers.setBackground(new Color(0x282B36));
+      	lineNumbers.setOpaque(true);
       	// Listener fires when "Show Line Numbers" check box is clicked.
          showLineNumbers.addItemListener(
                new ItemListener() {
@@ -173,6 +182,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   	// needed because caret disappears when checkbox clicked
                      sourceCode.setCaretVisible(true); 
                      sourceCode.requestFocusInWindow();
+                     
                   }
                });
       
@@ -182,7 +192,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          displayCaretPosition(new Point());
          editInfo.add(caretPositionLabel,BorderLayout.WEST);
          editInfo.add(showLineNumbers,BorderLayout.CENTER);
+         //editInfo.setBackground(Color.BLACK);
          this.add(editInfo,BorderLayout.SOUTH);
+         
+         
       }
    	
       
@@ -214,8 +227,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    	 * one line number per line.
    	 */
       private static final String spaces = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      
       public String getLineNumbersList(javax.swing.text.Document doc) {
-         StringBuffer lineNumberList = new StringBuffer("<html>");
+         StringBuffer lineNumberList = new StringBuffer("<html><p style=\"color:white\">");
          int lineCount = doc.getDefaultRootElement().getElementCount(); //this.getSourceLineCount();
          int digits = Integer.toString(lineCount).length();
          for (int i=1; i<=lineCount;i++) {

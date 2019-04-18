@@ -1,12 +1,41 @@
    package mars.venus;
-   import mars.*;
-   import mars.mips.dump.*;
-   import javax.swing.*;
-   import java.awt.*;
-   import java.awt.event.*;
-   import javax.swing.event.*;
-   import java.io.*;
-   import java.net.*;
+   import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Polygon;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.URL;
+
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JSplitPane;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+
+import javafx.scene.layout.Border;
+import mars.Globals;
+import mars.Settings;
 
 /*
 Copyright (c) 2003-2013,  Pete Sanderson and Kenneth Vollmar
@@ -106,14 +135,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     /**
       *  Constructor for the Class. Sets up a window object for the UI
    	*   @param s Name of the window to be created.
+     * @throws Exception 
    	**/     
    
-       public VenusUI(String s) {
+       public VenusUI(String s) throws Exception {
          super(s);
+         
+         UIManager.put("TabbedPane.selected", new Color(0x3D404A));
          mainUI = this;
+         
          Globals.setGui(this);
          this.editor = new Editor(this);
-      		 
+      	mainUI.setBackground(new Color(0x282B36));
+      	this.getContentPane().setBackground(new Color(0x282B36));
+      
+      	
          double screenWidth  = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
          double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
          // basically give up some screen space if running at 800 x 600
@@ -161,22 +197,75 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          coprocessor0Tab = new Coprocessor0Window();
          registersPane = new RegistersPane(mainUI, registersTab,coprocessor1Tab, coprocessor0Tab);
          registersPane.setPreferredSize(registersPanePreferredSize);
-      	
+         
       	//Insets defaultTabInsets = (Insets)UIManager.get("TabbedPane.tabInsets");
       	//UIManager.put("TabbedPane.tabInsets", new Insets(1, 1, 1, 1));
          mainPane = new MainPane(mainUI, editor, registersTab, coprocessor1Tab, coprocessor0Tab);
+         mainPane.setBackground(new Color(0x282B36));
+         
+         mainPane.setForeground(Color.WHITE);
+         mainPane.setOpaque(false);
+         
       	//UIManager.put("TabbedPane.tabInsets", defaultTabInsets); 
       	
          mainPane.setPreferredSize(mainPanePreferredSize);
+         
          messagesPane= new MessagesPane();
          messagesPane.setPreferredSize(messagesPanePreferredSize);
          splitter= new JSplitPane(JSplitPane.VERTICAL_SPLIT, mainPane, messagesPane);
+     
+
          splitter.setOneTouchExpandable(true);
          splitter.resetToPreferredSizes();
          horizonSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitter, registersPane);
+         horizonSplitter.setUI(new BasicSplitPaneUI() {
+             public BasicSplitPaneDivider createDefaultDivider() {
+             return new BasicSplitPaneDivider(this) {
+                 public void setBorder(Border b) {
+                 }
+
+                 @Override
+                     public void paint(Graphics g) {
+                     g.setColor(new Color(0x282B36));
+                     g.fillRect(0, 0, getSize().width, getSize().height);
+                     Polygon triangle = new Polygon();
+                     triangle.addPoint(0, 0);
+                     triangle.addPoint(15, 30);
+                     triangle.addPoint(30, 0);
+                     g.setColor(new Color(0x282B36));
+                     ((Graphics2D) g).fill( triangle );
+                         super.paint(g);
+                     }
+             };
+             }
+         });
+         horizonSplitter.setBorder(null);
+         splitter.setUI(new BasicSplitPaneUI() {
+             public BasicSplitPaneDivider createDefaultDivider() {
+             return new BasicSplitPaneDivider(this) {
+                 public void setBorder(Border b) {
+                 }
+
+                 @Override
+                     public void paint(Graphics g) {
+                     g.setColor(new Color(0x282B36));
+                     g.fillRect(0, 0, getSize().width, getSize().height);
+                     Polygon triangle = new Polygon();
+                     triangle.addPoint(0, 0);
+                     triangle.addPoint(15, 30);
+                     triangle.addPoint(30, 0);
+                     g.setColor(new Color(0x282B36));
+                     ((Graphics2D) g).fill( triangle );
+                         super.paint(g);
+                     }
+             };
+             }
+         });
+         splitter.setBorder(null);
          horizonSplitter.setOneTouchExpandable(true);
          horizonSplitter.resetToPreferredSizes();
-         
+         splitter.setBackground(new Color(0x52555e));
+         horizonSplitter.setBackground(new Color(0x52555e));
          // due to dependencies, do not set up menu/toolbar until now.
          this.createActionObjects();
          menu= this.setUpMenuBar();
@@ -188,10 +277,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          jp.add(toolbar);
          jp.add(RunSpeedPanel.getInstance());
          JPanel center= new JPanel(new BorderLayout());
+         center.setBackground(new Color(0x282B36));
          center.add(jp, BorderLayout.NORTH);
          center.add(horizonSplitter);
-      			
+         jp.setBackground(new Color(0x282B36));
       
+         
       	
          this.getContentPane().add(center);
       
@@ -377,6 +468,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                									  "Toggle between hexadecimal and decimal display of memory/register values",
                									  null,null,
                									  mainUI);
+            
             settingsAddressDisplayBaseAction = new SettingsAddressDisplayBaseAction("Addresses displayed in hexadecimal",
                                             null,
                									  "Toggle between hexadecimal and decimal display of memory addresses",
@@ -468,6 +560,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          Class cs = this.getClass(); 
          JMenuBar menuBar = new JMenuBar();
          UIManager.put("MenuItem.background", new Color(0x282B36));
+         UIManager.put("MenuItem.foreground", new Color(0xF9F9F6));
          file=new JMenu("File");
          file.setMnemonic(KeyEvent.VK_F);
          edit = new JMenu("Edit");
@@ -484,15 +577,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       
          fileNew = new JMenuItem(fileNewAction);
          fileNew.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"New16.png"))));
+         fileNew.setBorderPainted(false);
          fileOpen = new JMenuItem(fileOpenAction);
          fileOpen.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"Open16.png"))));
+         fileOpen.setBorderPainted(false);
          fileClose = new JMenuItem(fileCloseAction);
          fileClose.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"MyBlank16.gif"))));
+         fileClose.setBorderPainted(false);
          fileCloseAll = new JMenuItem(fileCloseAllAction);
          fileCloseAll.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"MyBlank16.gif"))));
          fileSave = new JMenuItem(fileSaveAction);
+         fileSave.setBorderPainted(false);
          fileSave.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"Save16.png"))));
          fileSaveAs = new JMenuItem(fileSaveAsAction);
+         
          fileSaveAs.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"SaveAs16.png"))));
          fileSaveAll = new JMenuItem(fileSaveAllAction);
          fileSaveAll.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"MyBlank16.gif"))));
@@ -502,6 +600,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          filePrint.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"Print16.gif"))));
          fileExit = new JMenuItem(fileExitAction);
          fileExit.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"MyBlank16.gif"))));
+         fileSaveAs.setBorderPainted(false);
+         fileSaveAll.setBorderPainted(false);
+         fileDumpMemory.setBorderPainted(false);
+         filePrint.setBorderPainted(false);
+         fileExit.setBorderPainted(false);
+         
          
          file.add(fileNew);
          file.add(fileOpen);
@@ -518,7 +622,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          file.add(filePrint);
          file.addSeparator();
          file.add(fileExit);
-      	
+      	 file.setForeground( new Color(0xF9F9F6));
          editUndo = new JMenuItem(editUndoAction);
          editUndo.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"Undo16.png"))));//"Undo16.gif"))));
          editRedo = new JMenuItem(editRedoAction);
@@ -542,7 +646,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          edit.addSeparator();
          edit.add(editFindReplace);
          edit.add(editSelectAll);
-      
+         edit.setForeground( new Color(0xF9F9F6));
          runAssemble = new JMenuItem(runAssembleAction);
          runAssemble.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"Assemble16.png"))));//"MyAssemble16.gif"))));
          runGo = new JMenuItem(runGoAction);
@@ -572,7 +676,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          run.addSeparator();
          run.add(runClearBreakpoints);
          run.add(runToggleBreakpoints);
-      	
+      	 run.setForeground( new Color(0xF9F9F6));
          settingsLabel = new JCheckBoxMenuItem(settingsLabelAction);
          settingsLabel.setSelected(Globals.getSettings().getLabelWindowVisibility());
          settingsPopupInput = new JCheckBoxMenuItem(settingsPopupInputAction);
@@ -625,7 +729,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          settings.add(settingsHighlighting);
          settings.add(settingsExceptionHandler);
          settings.add(settingsMemoryConfiguration);
-      			
+         settings.setForeground( new Color(0xF9F9F6));
          helpHelp = new JMenuItem(helpHelpAction);
          helpHelp.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"Help16.png"))));//"Help16.gif"))));
          helpAbout = new JMenuItem(helpAboutAction);
@@ -633,14 +737,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          help.add(helpHelp);
          help.addSeparator();
          help.add(helpAbout);
-      
+         help.setForeground(new Color(0xF9F9F6));
          menuBar.add(file);
          menuBar.add(edit);
          menuBar.add(run);
          menuBar.add(settings);
          JMenu toolMenu = new ToolLoader().buildToolsMenu();
+         toolMenu.setForeground(new Color(0xF9F9F6));
          if (toolMenu != null) menuBar.add(toolMenu);
          menuBar.add(help);
+      	menuBar.setBackground( new Color(0x282B36));
+      	menuBar.setBorderPainted(false);
       	
       	// experiment with popup menu for settings. 3 Aug 2006 PS
          //setupPopupMenu();
@@ -658,48 +765,88 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       	
          New = new JButton(fileNewAction);
          New.setText("");
+         New.setBackground(new Color(0x282B36));
+         New.setBorderPainted(false);
          Open = new JButton(fileOpenAction);
          Open.setText(""); 
+         Open.setBackground(new Color(0x282B36));
+         Open.setBorderPainted(false);
          Save = new JButton(fileSaveAction);
          Save.setText("");
+         Save.setBackground(new Color(0x282B36));
+         Save.setBorderPainted(false);
          SaveAs = new JButton(fileSaveAsAction);
          SaveAs.setText("");
+         SaveAs.setBackground(new Color(0x282B36));
+         SaveAs.setBorderPainted(false);
          DumpMemory = new JButton(fileDumpMemoryAction);
          DumpMemory.setText("");
+         DumpMemory.setBackground(new Color(0x282B36));
+         DumpMemory.setBorderPainted(false);
          Print= new JButton(filePrintAction);
          Print.setText("");
-      
+         Print.setBackground(new Color(0x282B36));
+         Print.setBorderPainted(false);
          Undo = new JButton(editUndoAction);
          Undo.setText(""); 
+         Undo.setBackground(new Color(0x282B36));
+         Undo.setBorderPainted(false);
          Redo = new JButton(editRedoAction);
          Redo.setText("");   	
+         Redo.setBackground(new Color(0x282B36));
+         Redo.setBorderPainted(false);
          Cut= new JButton(editCutAction);
          Cut.setText("");
+         Cut.setBackground(new Color(0x282B36));
+         Cut.setBorderPainted(false);
          Copy= new JButton(editCopyAction);
          Copy.setText("");
+         Copy.setBackground(new Color(0x282B36));
+         Copy.setBorderPainted(false);
          Paste= new JButton(editPasteAction);
          Paste.setText("");
+         Paste.setBackground(new Color(0x282B36));
+         Paste.setBorderPainted(false);
          FindReplace = new JButton(editFindReplaceAction);
          FindReplace.setText("");
+         FindReplace.setBackground(new Color(0x282B36));
+         FindReplace.setBorderPainted(false);
          SelectAll = new JButton(editSelectAllAction);
          SelectAll.setText("");
-      	
+         SelectAll.setBackground(new Color(0x282B36));
+         SelectAll.setBorderPainted(false);
          Run = new JButton(runGoAction);
          Run.setText("");
+         Run.setBackground(new Color(0x282B36));
+         Run.setBorderPainted(false);
          Assemble = new JButton(runAssembleAction);
          Assemble.setText(""); 
+         Assemble.setBackground(new Color(0x282B36));
+         Assemble.setBorderPainted(false);
          Step = new JButton(runStepAction);
          Step.setText(""); 
+         Step.setBackground(new Color(0x282B36));
+         Step.setBorderPainted(false);
          Backstep = new JButton(runBackstepAction);
          Backstep.setText("");
+         Backstep.setBackground(new Color(0x282B36));
+         Backstep.setBorderPainted(false);
          Reset = new JButton(runResetAction);
          Reset.setText(""); 
+         Reset.setBackground(new Color(0x282B36));
+         Reset.setBorderPainted(false);
          Stop = new JButton(runStopAction);
          Stop.setText("");
+         Stop.setBackground(new Color(0x282B36));
+         Stop.setBorderPainted(false);
          Pause = new JButton(runPauseAction);
-         Pause.setText("");      	
+         Pause.setText("");    
+         Pause.setBackground(new Color(0x282B36));
+         Pause.setBorderPainted(false);
          Help= new JButton(helpHelpAction);
          Help.setText("");
+         Help.setBackground(new Color(0x282B36));
+         Help.setBorderPainted(false);
          
          toolBar.add(New);
          toolBar.add(Open);
@@ -727,7 +874,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          toolBar.add(new JToolBar.Separator());
          toolBar.add(Help);
          toolBar.add(new JToolBar.Separator());
-      	
+      	toolBar.setBackground(new Color(0x282B36));
+      	toolBar.setBorderPainted(false);
          return toolBar;
       }
       
@@ -1159,6 +1307,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
        private void setupPopupMenu() {
          JPopupMenu popup; 
          popup = new JPopupMenu();
+         
       	// cannot put the same menu item object on two different menus.
       	// If you want to duplicate functionality, need a different item.
       	// Should be able to share listeners, but if both menu items are
@@ -1168,6 +1317,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          popup.add(new JCheckBoxMenuItem(settingsLabelAction)); 
       //Add listener to components that can bring up popup menus. 
          MouseListener popupListener = new PopupListener(popup); 
+         
          this.addMouseListener(popupListener); 
       }
      

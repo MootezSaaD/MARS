@@ -1,14 +1,52 @@
    package mars.venus;
-   import mars.*;
-   import mars.assembler.*;
-   import mars.mips.instructions.*;
-   import java.util.*;
-   import java.io.*;
-   import java.awt.*;
-   import java.awt.event.*;
-   import javax.swing.*;
-   import javax.swing.event.*;
-   import javax.swing.text.html.*;
+   import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Vector;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.ListCellRenderer;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLFrameHyperlinkEvent;
+
+import javafx.scene.layout.Border;
+import mars.Globals;
+import mars.assembler.Directives;
+import mars.mips.instructions.Instruction;
 	
 	/*
 Copyright (c) 2003-2008,  Pete Sanderson and Kenneth Vollmar
@@ -53,7 +91,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       // Light gray background color for alternating lines of the instruction lists
-      static Color altBackgroundColor = new Color(0xEE,0xEE,0xEE);  
+      static Color altBackgroundColor = new Color(0x3d404a);  
 		
 		/**
 		 *  Separates Instruction name descriptor from detailed (operation) description 
@@ -66,6 +104,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    	 */	  
        public void actionPerformed(ActionEvent e) {
          JTabbedPane tabbedPane = new JTabbedPane();
+         tabbedPane.setForeground(Color.WHITE);
+         tabbedPane.setBackground(new Color(0x282B36));
          tabbedPane.addTab("MIPS", createMipsHelpInfoPanel());
          tabbedPane.addTab("MARS", createMarsHelpInfoPanel());
          tabbedPane.addTab("License", createCopyrightInfoPanel());
@@ -84,6 +124,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                });
          //Add a "close" button to the non-modal help dialog.
          JButton closeButton = new JButton("Close");
+         closeButton.setBackground(new Color(0x282B36));
+         closeButton.setOpaque(false);
+         closeButton.setForeground(Color.WHITE);
          closeButton.addActionListener(
                 new ActionListener() {
                    public void actionPerformed(ActionEvent e) {
@@ -98,10 +141,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          closePanel.add(Box.createHorizontalGlue());
          closePanel.setBorder(BorderFactory.createEmptyBorder(0,0,5,5));
          JPanel contentPane = new JPanel();
+         contentPane.setBackground(new Color(0x282B36));
          contentPane.setLayout(new BoxLayout(contentPane,BoxLayout.PAGE_AXIS));
          contentPane.add(tabbedPane);
          contentPane.add(Box.createRigidArea(new Dimension(0,5)));
          contentPane.add(closePanel);
+         closePanel.setBackground(new Color(0x282B36));
          contentPane.setOpaque(true);
          dialog.setContentPane(contentPane);      
          //Show it.
@@ -117,6 +162,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
        private JPanel createHTMLHelpPanel(String filename) {
          JPanel helpPanel = new JPanel(new BorderLayout());
          JScrollPane helpScrollPane;
+         helpPanel.setBackground(new Color(0x282B36));
          JEditorPane helpDisplay;  
          try {
             InputStream is = this.getClass().getResourceAsStream(Globals.helpPath+filename);
@@ -176,6 +222,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
        private JPanel createMarsHelpInfoPanel() {
          JPanel marsHelpInfo = new JPanel(new BorderLayout());
          JTabbedPane tabbedPane = new JTabbedPane();
+         
          tabbedPane.addTab("Intro", createHTMLHelpPanel("MarsHelpIntro.html"));
          tabbedPane.addTab("IDE", createHTMLHelpPanel("MarsHelpIDE.html"));
          tabbedPane.addTab("Debugging", createHTMLHelpPanel("MarsHelpDebugging.html"));
@@ -185,6 +232,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          tabbedPane.addTab("Limits", createHTMLHelpPanel("MarsHelpLimits.html"));
          tabbedPane.addTab("History", createHTMLHelpPanel("MarsHelpHistory.html"));
          marsHelpInfo.add(tabbedPane);
+         marsHelpInfo.setBackground(new Color(0x282B36));
          return marsHelpInfo;
       }
    	
@@ -192,6 +240,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    	// Set up MIPS help tab.  Most contents are generated from instruction set info.
        private JPanel createMipsHelpInfoPanel() {
          JPanel mipsHelpInfo = new JPanel(new BorderLayout());
+       
          String helpRemarksColor = "CCFF99";
        // Introductory remarks go at the top as a label
          String helpRemarks = 
@@ -258,6 +307,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          mipsHelpInfo.add(operandsScrollPane, BorderLayout.NORTH);
          // Below the label is a tabbed pane with categories of MIPS help
          JTabbedPane tabbedPane = new JTabbedPane();
+         tabbedPane.setForeground(Color.WHITE);
+         tabbedPane.setBackground(new Color(0x282B36));
          tabbedPane.addTab("Basic Instructions", createMipsInstructionHelpPane("mars.mips.instructions.BasicInstruction"));
          tabbedPane.addTab("Extended (pseudo) Instructions", createMipsInstructionHelpPane("mars.mips.instructions.ExtendedInstruction"));
          tabbedPane.addTab("Directives", createMipsDirectivesHelpPane());
@@ -268,9 +319,34 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          operandsScrollPane.getVerticalScrollBar().setUnitIncrement(10);
          tabbedPane.setPreferredSize(new Dimension((int)this.getSize().getWidth(), (int) (this.getSize().getHeight()*.6)));
          JSplitPane splitsville = new JSplitPane(JSplitPane.VERTICAL_SPLIT, operandsScrollPane, tabbedPane);
+         splitsville.setBackground(new Color(0x282B36));
          splitsville.setOneTouchExpandable(true);
          splitsville.resetToPreferredSizes();
+         splitsville.setUI(new BasicSplitPaneUI() {
+             public BasicSplitPaneDivider createDefaultDivider() {
+             return new BasicSplitPaneDivider(this) {
+                 public void setBorder(Border b) {
+                 }
+
+                 @Override
+                     public void paint(Graphics g) {
+                     g.setColor(new Color(0x282B36));
+                     g.fillRect(0, 0, getSize().width, getSize().height);
+                     Polygon triangle = new Polygon();
+                     triangle.addPoint(0, 0);
+                     triangle.addPoint(15, 30);
+                     triangle.addPoint(30, 0);
+                     g.setColor(new Color(0x282B36));
+                     ((Graphics2D) g).fill( triangle );
+                         super.paint(g);
+                     }
+             };
+             }
+         });
+         splitsville.setBorder(null);
+         splitsville.setBorder(null);
          mipsHelpInfo.add(splitsville);
+         mipsHelpInfo.setBackground(new Color(0x282B36));
          //mipsHelpInfo.add(tabbedPane);
          return mipsHelpInfo;
       }
@@ -434,7 +510,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   closePanel.setBorder(BorderFactory.createEmptyBorder(0,0,5,5));
                   closePanel.add(Box.createHorizontalGlue());
                   closePanel.add(closeButton);
+                 // tabbedPane.setForeground(Color.WHITE);
+                  
                   closePanel.add(Box.createHorizontalGlue());
+                  closePanel.setBackground(new Color(0x282B36));
+                  
                   webpageDisplay.add(closePanel,BorderLayout.SOUTH);
                   webpageDisplay.pack();
                   webpageDisplay.setVisible(true);

@@ -83,6 +83,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    	 */
        private RunSpeedPanel() {
          super(new BorderLayout());
+         super.setBackground(new Color(0x282B36));
          runSpeedSlider = new JSlider(JSlider.HORIZONTAL, SPEED_INDEX_MIN,SPEED_INDEX_MAX,SPEED_INDEX_INIT);
          runSpeedSlider.setSize(new Dimension(100,(int)runSpeedSlider.getSize().getHeight()));
          runSpeedSlider.setMaximumSize(runSpeedSlider.getSize());
@@ -91,7 +92,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          runSpeedSlider.addChangeListener(new RunSpeedListener());
          sliderLabel = new JLabel(setLabel(runSpeedIndex));
          sliderLabel.setHorizontalAlignment(JLabel.CENTER);
-         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);         
+         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT); 
+         sliderLabel.setForeground(Color.WHITE);
+         sliderLabel.setBackground(new Color(0x282B36));
+         runSpeedSlider.setBackground(new Color(0x282B36));
+         
          this.add(sliderLabel, BorderLayout.NORTH);
          this.add(runSpeedSlider, BorderLayout.CENTER);
 			this.setToolTipText("Simulation speed for \"Go\".  At "+
@@ -143,6 +148,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             } 
             else {
                sliderLabel.setText(setLabel(source.getValue()));
+               
             }
          } 
       }

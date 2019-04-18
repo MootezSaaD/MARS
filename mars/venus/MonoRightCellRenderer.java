@@ -1,8 +1,13 @@
    package mars.venus;
-   import mars.*;
-   import javax.swing.table.*;
-	import javax.swing.*;
-	import java.awt.*;
+   import java.awt.Component;
+import java.awt.Font;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 	
 	/*
 Copyright (c) 2003-2006,  Pete Sanderson and Kenneth Vollmar
@@ -39,7 +44,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * of the integer value.
  */
     class MonoRightCellRenderer extends DefaultTableCellRenderer { 
-      public static final Font MONOSPACED_PLAIN_12POINT = new Font("Monospaced",Font.PLAIN,12); 
+
+    	
+      public static final Font MONOSPACED_PLAIN_12POINT = new Font("Serif",Font.BOLD,12); 
+      
        public Component getTableCellRendererComponent(JTable table, Object value, 
                             boolean isSelected, boolean hasFocus, int row, int column) {									 
          JLabel cell = (JLabel) super.getTableCellRendererComponent(table, value, 

@@ -105,15 +105,21 @@ public class JEditTextArea extends JComponent
                     ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
       lineNumberScroller.setBorder(new javax.swing.border.EmptyBorder(1,1,1,1));
       lineNumbersVertical = lineNumberScroller.getVerticalScrollBar();
-   				
+      
+      lineNumberScroller.getVerticalScrollBar().setOpaque(false);
+      lineNumberScroller.getVerticalScrollBar().setUI(new MyScrollBarUI());
    // Initialize the GUI
       JPanel lineNumbersPlusPainter = new JPanel(new BorderLayout());
       lineNumbersPlusPainter.add(painter, BorderLayout.CENTER);
       lineNumbersPlusPainter.add(lineNumberScroller, BorderLayout.WEST);
       setLayout(new ScrollLayout());
       add(CENTER, lineNumbersPlusPainter); //was: painter
-      add(RIGHT,vertical = new JScrollBar(JScrollBar.VERTICAL));
-      add(BOTTOM,horizontal = new JScrollBar(JScrollBar.HORIZONTAL));
+      vertical = new JScrollBar(JScrollBar.VERTICAL);
+      
+      add(RIGHT,vertical);
+      
+      horizontal = new JScrollBar(JScrollBar.HORIZONTAL);
+      add(BOTTOM,horizontal);
       
    
    

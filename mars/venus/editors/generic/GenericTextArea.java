@@ -1,13 +1,16 @@
    package mars.venus.editors.generic;
 
    import mars.Globals;
-   import mars.venus.EditPane;
+
+import mars.venus.CustomFont;
+import mars.venus.EditPane;
    import mars.venus.editors.MARSTextEditingArea;
    import java.awt.*;
    import javax.swing.*;
    import javax.swing.event.*;
    import javax.swing.undo.*;
    import java.util.*;
+   import mars.venus.editors.jeditsyntax.*;
 
 /*
 Copyright (c) 2003-2010,  Pete Sanderson and Kenneth Vollmar
@@ -50,14 +53,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       private CompoundEdit compoundEdit;
      
        public GenericTextArea(EditPane editPain, JComponent lineNumbers) {
+    	  
+
          this.editPane = editPain;
          this.sourceCode = this;
-         this.setFont(Globals.getSettings().getEditorFont());
+         this.setFont(CustomFont.CustomF());
          this.setTabSize(Globals.getSettings().getEditorTabSize());
          this.setMargin(new Insets(0,3,3,3));
          this.setCaretBlinkRate(Globals.getSettings().getCaretBlinkRate());
-      
+         this.setBackground(new Color(0x282B36));
+         this.setForeground(Color.white);
+         editPane.setBackground(new Color(0x282B36));
          JPanel source = new JPanel(new BorderLayout());
+         
          source.add(lineNumbers, BorderLayout.WEST);
          source.add(this, BorderLayout.CENTER);
          
@@ -66,7 +74,44 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
          editAreaScrollPane.getVerticalScrollBar().setUnitIncrement(
                        sourceCode.getFontMetrics(this.sourceCode.getFont()).getHeight());
-      
+         editAreaScrollPane.getVerticalScrollBar().setOpaque(false);
+         editAreaScrollPane.getVerticalScrollBar().setUI(new MyScrollBarUI());
+         editAreaScrollPane.setLayout(new ScrollPaneLayout() {
+             /**
+     		 * 
+     		 */
+     		private static final long serialVersionUID = 1L;
+
+     	@Override
+           public void layoutContainer(Container parent) {
+             JScrollPane scrollPane = (JScrollPane) parent;
+
+             Rectangle availR = scrollPane.getBounds();
+             availR.x = availR.y = 0;
+
+             Insets parentInsets = parent.getInsets();
+             availR.x = parentInsets.left;
+             availR.y = parentInsets.top;
+             availR.width -= parentInsets.left + parentInsets.right;
+             availR.height -= parentInsets.top + parentInsets.bottom;
+
+             Rectangle vsbR = new Rectangle();
+             vsbR.width = 12;
+             vsbR.height = availR.height;
+             vsbR.x = availR.x + availR.width - vsbR.width;
+             vsbR.y = availR.y;
+
+             if (viewport != null) {
+               viewport.setBounds(availR);
+             }
+             if (vsb != null) {
+               vsb.setVisible(true);
+               vsb.setBounds(vsbR);
+             }
+           }
+         });
+         
+         
          this.undoManager = new UndoManager();
       
          this.getCaret().addChangeListener(

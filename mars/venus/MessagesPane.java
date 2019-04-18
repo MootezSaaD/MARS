@@ -62,20 +62,30 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    
        public MessagesPane() {
          super();
+         UIManager.put("TabbedPane.selected", new Color(0x3D404A));
+         
          this.setMinimumSize(new Dimension(0,0));
+         this.setBackground(new Color(0x282B36));
+         this.setForeground(Color.WHITE);
          assemble= new JTextArea();
          run= new JTextArea();
+         run.setBackground(new Color(0x282B36));
+         run.setForeground(Color.white);
          assemble.setEditable(false); 
          run.setEditable(false);
+         assemble.setBackground(new Color(0x282B36));
+         assemble.setForeground(Color.white);
       	// Set both text areas to mono font.  For assemble
       	// pane, will make messages more readable.  For run
       	// pane, will allow properly aligned "text graphics"
       	// DPS 15 Dec 2008
          Font monoFont = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-         assemble.setFont(monoFont);
-         run.setFont(monoFont);      	
+         assemble.setFont(CustomFont.CustomF());
+         run.setFont(CustomFont.CustomF());      	
       	
          JButton assembleTabClearButton = new JButton("Clear");
+         assembleTabClearButton.setBackground(new Color(0x282B36));
+         assembleTabClearButton.setForeground(Color.white);
          assembleTabClearButton.setToolTipText("Clear the Mars Messages area");
          assembleTabClearButton.addActionListener(
                 new ActionListener() {
@@ -84,6 +94,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   }
                });
          assembleTab = new JPanel(new BorderLayout());
+         assembleTab.setBackground(new Color(0x282B36));
          assembleTab.add(createBoxForButton(assembleTabClearButton),BorderLayout.WEST);
          assembleTab.add(new JScrollPane(assemble, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
                        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
@@ -155,6 +166,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       				      					  
          JButton runTabClearButton = new JButton("Clear");
          runTabClearButton.setToolTipText("Clear the Run I/O area");
+         
+         runTabClearButton.setBackground(new Color(0x282B36));
+         runTabClearButton.setForeground(Color.WHITE);
          runTabClearButton.addActionListener(
                 new ActionListener() {
                    public void actionPerformed(ActionEvent e){ 
@@ -169,7 +183,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          this.addTab("Run I/O", runTab);
          this.setToolTipTextAt(0,"Messages produced by Run menu. Click on assemble error message to select erroneous line");
          this.setToolTipTextAt(1,"Simulated MIPS console input and output");
-      }
+         this.setBackground(new Color(0x282B36));
+         
+         runTab.setBackground(new Color(0x282B36));
+       }
    	
       // Center given button in a box, centered vertically and 6 pixels on left and right
        private Box createBoxForButton(JButton button) {

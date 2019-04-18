@@ -1,13 +1,14 @@
    package mars.venus;
-   import mars.*;
-   import mars.util.*;
-   import java.util.ArrayList;
-   import java.awt.*;
-   import java.awt.event.*;
-   import javax.swing.*;
-   import javax.swing.filechooser.FileFilter;
-   import java.io.*;
-   import java.beans.*;
+   import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.util.ArrayList;
+
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
+import javax.swing.KeyStroke;
+import javax.swing.UIDefaults;
 	
 	/*
 Copyright (c) 2003-2008,  Pete Sanderson and Kenneth Vollmar
@@ -51,6 +52,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
        public FileOpenAction(String name, Icon icon, String descrip,
                              Integer mnemonic, KeyStroke accel, VenusUI gui) {
          super(name, icon, descrip, mnemonic, accel, gui);
+         
       }
    	 
        /**
@@ -60,6 +62,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    	  */
        public void actionPerformed(ActionEvent e) {
          mainUI.editor.open();
+         
+
       }
    
    }      

@@ -11,7 +11,8 @@
 
    package mars.venus.editors.jeditsyntax;
 
-   import mars.venus.editors.jeditsyntax.tokenmarker.*;
+   import mars.venus.CustomFont;
+import mars.venus.editors.jeditsyntax.tokenmarker.*;
    import javax.swing.ToolTipManager;
    import javax.swing.text.*;
    import javax.swing.JComponent;
@@ -47,7 +48,7 @@
       
          setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
       
-         setFont(new Font("Courier New" /*"Monospaced"*/,Font.PLAIN,20));
+         setFont(CustomFont.CustomF());
          setForeground(Color.white);
          setBackground(new Color(0x282B36));
       

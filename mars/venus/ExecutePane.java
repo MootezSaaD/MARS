@@ -1,7 +1,9 @@
    package mars.venus;
    import mars.*;
    import javax.swing.*;
-   import java.awt.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+
+import java.awt.*;
    import java.util.*;
 
 /*
@@ -60,6 +62,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    
        public ExecutePane(VenusUI mainUI, RegistersWindow regs, Coprocessor1Window cop1Regs, Coprocessor0Window cop0Regs) {
          this.mainUI = mainUI;
+         this.setBackground(new Color(0x3E3E3E));
+        
       	// Although these are displayed in Data Segment, they apply to all three internal
       	// windows within the Execute pane.  So they will be housed here.
          addressDisplayBase = new NumberDisplayBaseChooser("Hexadecimal Addresses",
@@ -73,8 +77,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          coprocessor1Values = cop1Regs;
          coprocessor0Values = cop0Regs;																	
          textSegment = new TextSegmentWindow();
+         textSegment.setOpaque(false);
+         
+         textSegment.setBackground(new Color(0x282B36));
+         textSegment.setFont(CustomFont.CustomF());
          dataSegment = new DataSegmentWindow(choosers);
+         dataSegment.setBackground(new Color(0x282B36));
          labelValues = new LabelsWindow();
+         labelValues.setBackground(new Color(0x282B36));
+         labelValues.setFont(CustomFont.CustomF());
          labelWindowVisible = Globals.getSettings().getLabelWindowVisibility();
          this.add(textSegment);  // these 3 LOC moved up.  DPS 3-Sept-2014
          this.add(dataSegment);

@@ -1,7 +1,8 @@
    package mars.venus;
    import mars.*;
    import mars.util.*;
-   import mars.simulator.*;
+import mars.venus.editors.jeditsyntax.MyScrollBarUI;
+import mars.simulator.*;
    import mars.mips.hardware.*;
    import javax.swing.*;
    import java.awt.*;
@@ -242,6 +243,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    	 // currently in the (display) table, including a different MIPS data segment (e.g. in
    	 // kernel instead of user data segment).
       private Point displayCellForAddress(int address) {
+    	  
          //////////////////////////////////////////////////////////
       	// This requires a 5-step process.  Each step is described
       	// just above the statements that implement it.
@@ -297,6 +299,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          int numberOfVisibleRows = (int) (viewHeight / cellHeight);
          int newViewPositionY = Math.max((int)((addrRow-(numberOfVisibleRows/2))*cellHeight), 0);
          dataTableScroller.getViewport().setViewPosition(new Point(0, newViewPositionY));
+         dataTableScroller.setBackground(new Color(0x282B36));
+         dataTableScroller.getVerticalScrollBar().setOpaque(false);
+         dataTableScroller.getHorizontalScrollBar().setOpaque(false);
+         dataTableScroller.getVerticalScrollBar().setUI(new MyScrollBarUI());
+         dataTableScroller.getHorizontalScrollBar().setUI(new MyScrollBarUI());
+         dataTable.setBackground(new Color(0x282B36));
+         dataTable.setForeground(Color.white);
+         dataTable.getTableHeader().setBackground(new Color(0x3C3C33));
+         dataTable.getTableHeader().setForeground(new Color(0xF9F9F6));
+         UIManager.put("Table.font",CustomFont.CustomF());
          return new Point(addrRow, addrColumn); 
       }
    
@@ -443,6 +455,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          }
          dataTableScroller = new JScrollPane(dataTable,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, 
                                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+         
+         dataTableScroller.getViewport().setBackground(new Color(0x282B36) );
+       
          return dataTableScroller;
       }
       
@@ -1015,19 +1030,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             cell.setHorizontalAlignment(SwingConstants.RIGHT);
             int rowFirstAddress = Binary.stringToInt(table.getValueAt(row,ADDRESS_COLUMN).toString());
             if (settings.getDataSegmentHighlighting() && addressHighlighting  && rowFirstAddress==addressRowFirstAddress && column==addressColumn) {
-               cell.setBackground( settings.getColorSettingByPosition(Settings.DATASEGMENT_HIGHLIGHT_BACKGROUND) );
-               cell.setForeground( settings.getColorSettingByPosition(Settings.DATASEGMENT_HIGHLIGHT_FOREGROUND) );
-               cell.setFont( settings.getFontByPosition(Settings.DATASEGMENT_HIGHLIGHT_FONT) );
+            	 cell.setBackground( new Color(0x5F6066) );
+	               cell.setForeground( new Color(0xF9F9F6) );
+						cell.setFont( CustomFont.CustomF() );
             } 
             else if (row%2==0) {
-               cell.setBackground( settings.getColorSettingByPosition(Settings.EVEN_ROW_BACKGROUND) );
-               cell.setForeground( settings.getColorSettingByPosition(Settings.EVEN_ROW_FOREGROUND) );
-               cell.setFont( settings.getFontByPosition(Settings.EVEN_ROW_FONT) );
+           	 cell.setBackground( new Color(0x282B36) );
+             cell.setForeground( new Color(0xF9F9F6) );
+					cell.setFont( CustomFont.CustomF() );
             } 
             else {
-               cell.setBackground( settings.getColorSettingByPosition(Settings.ODD_ROW_BACKGROUND) );
-               cell.setForeground( settings.getColorSettingByPosition(Settings.ODD_ROW_FOREGROUND) );				
-               cell.setFont( settings.getFontByPosition(Settings.ODD_ROW_FONT) );
+            	 cell.setBackground( new Color(0x3D404A) );
+                 cell.setForeground( new Color(0xF9F9F6) );				
+					cell.setFont( CustomFont.CustomF() );
             }
             return cell;
          }  

@@ -2,7 +2,8 @@
 	
    import mars.*;
    import mars.simulator.*;
-   import mars.mips.hardware.*;
+import mars.venus.editors.jeditsyntax.MyScrollBarUI;
+import mars.mips.hardware.*;
    import mars.mips.instructions.*;
    import javax.swing.*;
    import java.awt.*;
@@ -10,6 +11,7 @@
    import java.util.*;   
    import javax.swing.table.*;
    import javax.swing.event.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 	
 	/*
 Copyright (c) 2003-2007,  Pete Sanderson and Kenneth Vollmar
@@ -90,13 +92,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          Simulator.getInstance().addObserver(this);
          Globals.getSettings().addObserver(this);
          contentPane = this.getContentPane();
+         this.getContentPane().setBackground(new Color(0x282B36));
+         this.setBackground(new Color(0x282B36));
          codeHighlighting = true;
          breakpointsEnabled = true;
          programArgumentsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+         programArgumentsPanel.setBackground(UIManager.getColor("Button.darkShadow"));
+         programArgumentsPanel.setForeground(new Color(0x3e3e3e));
+         
          programArgumentsPanel.add(new JLabel("Program Arguments: "));
          programArgumentsTextField = new JTextField(PROGRAM_ARGUMENT_TEXTFIELD_COLUMNS);
          programArgumentsTextField.setToolTipText("Arguments provided to program at runtime via $a0 (argc) and $a1 (argv)");
          programArgumentsPanel.add(programArgumentsTextField);
+        
+
       }
    
      
@@ -113,6 +122,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          intAddresses = new int[data.length];
          addressRows = new Hashtable(data.length);
          executeMods = new Hashtable<Integer,ModifiedCode>(data.length);
+         
       	// Get highest source line number to determine #leading spaces so line numbers will vertically align
       	// In multi-file situation, this will not necessarily be the last line b/c sourceStatementList contains
       	// source lines from all files.  DPS 3-Oct-10
@@ -149,11 +159,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          }
          contentPane.removeAll();
          tableModel = new TextTableModel(data);
+         
+         
          if (tableModelListener!=null) {
             tableModel.addTableModelListener(tableModelListener);
             tableModel.fireTableDataChanged();// initialize listener
          }
          table= new MyTippedJTable(tableModel);
+         
       
       	// prevents cells in row from being highlighted when user clicks on breakpoint checkbox
          table.setRowSelectionAllowed(false);
@@ -186,7 +199,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       
          tableScroller = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, 
                          ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+         tableScroller.setBackground(new Color(0x282B36));
+         tableScroller.getVerticalScrollBar().setOpaque(false);
+         tableScroller.getHorizontalScrollBar().setOpaque(false);
+         tableScroller.getVerticalScrollBar().setUI(new MyScrollBarUI());
+         tableScroller.getHorizontalScrollBar().setUI(new MyScrollBarUI());
          contentPane.add(tableScroller);
+         tableScroller.getViewport().setBackground(new Color(0x282B36));
+         table.getTableHeader().setBackground(new Color(0x3C3C33));
+         table.getTableHeader().setForeground(new Color(0xF9F9F6));
+         
+         table.setForeground(new Color(0xF9F9F6));
+         table.setBackground(new Color(0x282B36));
+         table.setFont(CustomFont.CustomF());
+         contentPane.setFont(CustomFont.CustomF());
          if (Globals.getSettings().getProgramArguments()) {
             addProgramArgumentsPanel();  
          } 
@@ -821,32 +847,32 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                             boolean isSelected, boolean hasFocus, int row, int column) {									 
             Component cell = super.getTableCellRendererComponent(table, value, 
                                     isSelected, hasFocus, row, column);
-            //cell.setFont(tableCellFont);
+            cell.setFont(CustomFont.CustomF());
             TextSegmentWindow textSegment = Globals.getGui().getMainPane().getExecutePane().getTextSegmentWindow();
             Settings settings = Globals.getSettings();
             boolean highlighting = textSegment.getCodeHighlighting();
          	
             if (highlighting && textSegment.getIntCodeAddressAtRow(row) == highlightAddress) {
                if (mars.simulator.Simulator.inDelaySlot() || textSegment.inDelaySlot) {
-                  cell.setBackground( settings.getColorSettingByPosition(Settings.TEXTSEGMENT_DELAYSLOT_HIGHLIGHT_BACKGROUND) );
-                  cell.setForeground( settings.getColorSettingByPosition(Settings.TEXTSEGMENT_DELAYSLOT_HIGHLIGHT_FOREGROUND) );
-                  cell.setFont( settings.getFontByPosition(Settings.TEXTSEGMENT_DELAYSLOT_HIGHLIGHT_FONT) );
+            	   cell.setBackground( new Color(0x5F6066) );
+	               cell.setForeground( new Color(0xF9F9F6) );
+						cell.setFont( CustomFont.CustomF() );
                } 
                else {
-                  cell.setBackground( settings.getColorSettingByPosition(Settings.TEXTSEGMENT_HIGHLIGHT_BACKGROUND) );
-                  cell.setForeground( settings.getColorSettingByPosition(Settings.TEXTSEGMENT_HIGHLIGHT_FOREGROUND) );
-                  cell.setFont( settings.getFontByPosition(Settings.TEXTSEGMENT_HIGHLIGHT_FONT) );
+            	   cell.setBackground( new Color(0x282B36) );
+	               cell.setForeground( new Color(0xF9F9F6) );
+						cell.setFont( CustomFont.CustomF() );
                }
             } 
             else if (row%2==0) {
-               cell.setBackground( settings.getColorSettingByPosition(Settings.EVEN_ROW_BACKGROUND) );
-               cell.setForeground( settings.getColorSettingByPosition(Settings.EVEN_ROW_FOREGROUND) );
-               cell.setFont( settings.getFontByPosition(Settings.EVEN_ROW_FONT) );
+            	 cell.setBackground( new Color(0x282B36) );
+	               cell.setForeground( new Color(0xF9F9F6) );
+						cell.setFont( CustomFont.CustomF() );
             } 
             else {
-               cell.setBackground( settings.getColorSettingByPosition(Settings.ODD_ROW_BACKGROUND) );
-               cell.setForeground( settings.getColorSettingByPosition(Settings.ODD_ROW_FOREGROUND) );				
-               cell.setFont( settings.getFontByPosition(Settings.ODD_ROW_FONT) );
+            	 cell.setBackground( new Color(0x282B36) );
+	               cell.setForeground( new Color(0xF9F9F6) );
+						cell.setFont( CustomFont.CustomF() );
             }				
             return cell;
          }  
@@ -862,15 +888,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                             boolean isSelected, boolean hasFocus, int row, int column) {									 
             JLabel cell = (JLabel) super.getTableCellRendererComponent(table, value, 
                                     isSelected, hasFocus, row, column);
-            cell.setFont(MonoRightCellRenderer.MONOSPACED_PLAIN_12POINT);
-            cell.setHorizontalAlignment(SwingConstants.RIGHT);
+            cell.setFont( CustomFont.CustomF() );	
+            cell.setHorizontalAlignment(SwingConstants.CENTER);
             if (row%2==0) {
-               cell.setBackground( Globals.getSettings().getColorSettingByPosition(Settings.EVEN_ROW_BACKGROUND) );
-               cell.setForeground( Globals.getSettings().getColorSettingByPosition(Settings.EVEN_ROW_FOREGROUND) );
+            	 cell.setBackground( new Color(0x282B36) );
+	               cell.setForeground( new Color(0xF9F9F6) );
+						
             } 
             else {
-               cell.setBackground( Globals.getSettings().getColorSettingByPosition(Settings.ODD_ROW_BACKGROUND) );
-               cell.setForeground( Globals.getSettings().getColorSettingByPosition(Settings.ODD_ROW_FOREGROUND) );				
+            	 cell.setBackground( new Color(0x282B36) );
+	               cell.setForeground( new Color(0xF9F9F6) );
+								
             }
             return cell;
          }  
@@ -891,8 +919,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       
           public CheckBoxTableCellRenderer() {
             super();
+           
+            setOpaque(true);
             setContentAreaFilled(true); 
             setBorderPainted(true);
+            setBackground(new Color(0xcfcfd1));
+            
             setHorizontalAlignment(SwingConstants.CENTER);
             setVerticalAlignment(SwingConstants.CENTER);
          	

@@ -59,12 +59,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    	**/
    	
        public EditTabbedPane(VenusUI appFrame, Editor editor, MainPane mainPane){
-         super();
+         
+    	   super();
+    	
+        super.setForeground(Color.white);
          this.mainUI = appFrame;
+         mainUI.setBackground(new Color(0x282B36));
+         mainUI.setForeground(Color.white);
          this.editor = editor;
          this.fileOpener = new FileOpener(editor);
          this.mainPane = mainPane;
          this.editor.setEditTabbedPane(this);
+         
          this.addChangeListener(
                 new ChangeListener() {
                    public void stateChanged(ChangeEvent e) {
@@ -113,7 +119,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    	*  @return EditPane for the specified file, or null if file is unable to be opened in an EditPane
    	*/
        public EditPane getCurrentEditTabForFile(File file) {
-         EditPane result = null;
+    	   
+    	   EditPane result = null;
          EditPane tab = getEditPaneForFile(file.getPath());
          if (tab != null) {
             if (tab != getCurrentEditTab()) {

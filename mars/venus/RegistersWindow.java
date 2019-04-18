@@ -1,14 +1,37 @@
    package mars.venus;
-   import mars.*;
-   import mars.util.*;
-   import mars.simulator.*;
-   import mars.mips.hardware.*;
-   import javax.swing.*;
-   import java.awt.*;
-   import java.awt.event.*;
-   import java.util.*;
-   import javax.swing.table.*;
-   import javax.swing.event.*;
+   import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+
+import mars.Globals;
+import mars.Settings;
+import mars.mips.hardware.AccessNotice;
+import mars.mips.hardware.Register;
+import mars.mips.hardware.RegisterAccessNotice;
+import mars.mips.hardware.RegisterFile;
+import mars.simulator.Simulator;
+import mars.simulator.SimulatorNotice;
+import mars.util.Binary;
 
 /*
 Copyright (c) 2003-2009,  Pete Sanderson and Kenneth Vollmar
@@ -56,24 +79,34 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       private static Settings settings;
    /**
      *  Constructor which sets up a fresh window with a table that contains the register values.
+ * @throws Exception 
      **/
    
-       public RegistersWindow(){
+       public RegistersWindow() throws Exception{
          Simulator.getInstance().addObserver(this);
 			settings = Globals.getSettings();
          this.highlighting = false;
+
          table = new MyTippedJTable(new RegTableModel(setupWindow()));
          table.getColumnModel().getColumn(NAME_COLUMN).setPreferredWidth(25);
          table.getColumnModel().getColumn(NUMBER_COLUMN).setPreferredWidth(25);
          table.getColumnModel().getColumn(VALUE_COLUMN).setPreferredWidth(60);
       	// Display register values (String-ified) right-justified in mono font
-         table.getColumnModel().getColumn(NAME_COLUMN).setCellRenderer(new RegisterCellRenderer(MonoRightCellRenderer.MONOSPACED_PLAIN_12POINT, SwingConstants.LEFT));
-         table.getColumnModel().getColumn(NUMBER_COLUMN).setCellRenderer(new RegisterCellRenderer(MonoRightCellRenderer.MONOSPACED_PLAIN_12POINT, SwingConstants.RIGHT));
-         table.getColumnModel().getColumn(VALUE_COLUMN).setCellRenderer(new RegisterCellRenderer(MonoRightCellRenderer.MONOSPACED_PLAIN_12POINT, SwingConstants.RIGHT));
+         table.getColumnModel().getColumn(NAME_COLUMN).setCellRenderer(new RegisterCellRenderer(CustomFont.CustomF(), SwingConstants.CENTER));
+         table.getColumnModel().getColumn(NUMBER_COLUMN).setCellRenderer(new RegisterCellRenderer(CustomFont.CustomF(), SwingConstants.CENTER));
+         table.getColumnModel().getColumn(VALUE_COLUMN).setCellRenderer(new RegisterCellRenderer(CustomFont.CustomF(), SwingConstants.CENTER));
          table.setPreferredScrollableViewportSize(new Dimension(200,700));
+         table.getTableHeader().setBackground(new Color(0x3C3C33));
+         table.getTableHeader().setForeground(new Color(0xF9F9F6));
+         table.getTableHeader().setFont(CustomFont.CustomF());
          this.setLayout(new BorderLayout()); // table display will occupy entire width if widened
-         this.add(new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-      }
+         JScrollPane JP = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+         JP.getViewport().setBackground(new Color(0x282B36) );
+
+         this.add(JP);
+  
+         
+       }
     
     /**
       *  Sets up the data for the window.
@@ -236,27 +269,35 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          }
       	
           public Component getTableCellRendererComponent(JTable table, Object value, 
-                            boolean isSelected, boolean hasFocus, int row, int column) {									 
-            JLabel cell = (JLabel) super.getTableCellRendererComponent(table, value, 
-                                    isSelected, hasFocus, row, column);
+         
+        		  boolean isSelected, boolean hasFocus, int row, int column) {									 
+        	  JLabel cell = (JLabel) super.getTableCellRendererComponent(table, value, 
+                      isSelected, hasFocus, row, column);
+        	
+        	 
             cell.setFont(font);
             cell.setHorizontalAlignment(alignment);
-            if (settings.getRegistersHighlighting() && highlighting && row==highlightRow) {
-               cell.setBackground( settings.getColorSettingByPosition(Settings.REGISTER_HIGHLIGHT_BACKGROUND) );
-               cell.setForeground( settings.getColorSettingByPosition(Settings.REGISTER_HIGHLIGHT_FOREGROUND) );
-					cell.setFont( settings.getFontByPosition(Settings.REGISTER_HIGHLIGHT_FONT) );
-            } 
-            else if (row%2==0) {
-               cell.setBackground( settings.getColorSettingByPosition(Settings.EVEN_ROW_BACKGROUND) );
-               cell.setForeground( settings.getColorSettingByPosition(Settings.EVEN_ROW_FOREGROUND) );
-					cell.setFont( settings.getFontByPosition(Settings.EVEN_ROW_FONT) );
-            } 
-            else {
-               cell.setBackground( settings.getColorSettingByPosition(Settings.ODD_ROW_BACKGROUND) );
-               cell.setForeground( settings.getColorSettingByPosition(Settings.ODD_ROW_FOREGROUND) );				
-					cell.setFont( settings.getFontByPosition(Settings.ODD_ROW_FONT) );
-            }
-            return cell;
+	        	
+		         if (settings.getRegistersHighlighting() && highlighting && row==highlightRow) {
+		        	   cell.setBackground( new Color(0x282B36) );
+		               cell.setForeground( new Color(0xF9F9F6) );
+							cell.setFont( CustomFont.CustomF() );
+		            } 
+		            else if (row%2==0) {
+		            	 cell.setBackground( new Color(0x282B36) );
+		                 cell.setForeground( new Color(0xF9F9F6) );
+							cell.setFont( CustomFont.CustomF() );
+		            } 
+		            else {
+		            	 cell.setBackground( new Color(0x3D404A) );
+		                 cell.setForeground( new Color(0xF9F9F6) );				
+							cell.setFont( CustomFont.CustomF() );
+		            }
+		            
+        return cell;
+          		
+     		 ///
+           
          }  
       }
    

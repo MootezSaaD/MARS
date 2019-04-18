@@ -246,7 +246,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                      //Turn off metal's use of bold fonts
                      //UIManager.put("swing.boldMetal", Boolean.FALSE);
                       
-                     new VenusUI("MARS "+Globals.version);
+                     try {
+						new VenusUI("MARS "+Globals.version);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                   }
                }); 
          return;					

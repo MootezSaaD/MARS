@@ -1,6 +1,10 @@
    package mars.venus;
-   import java.awt.event.*;
-   import javax.swing.*;
+   import java.awt.Color;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
+import javax.swing.KeyStroke;
 	
 	/*
 Copyright (c) 2003-2006,  Pete Sanderson and Kenneth Vollmar

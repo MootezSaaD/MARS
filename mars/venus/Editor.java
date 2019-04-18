@@ -1,7 +1,9 @@
    package mars.venus;
    import mars.*;
    import javax.swing.*;
-   import java.io.*;
+
+import java.awt.Color;
+import java.io.*;
  
  /*
 Copyright (c) 2003-2007,  Pete Sanderson and Kenneth Vollmar
@@ -61,10 +63,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      * @param ui the GUI that owns this editor
      */
        public Editor(VenusUI ui) {
+    	   UIManager.put("TabbedPane.selected", new Color(0x3D404A));
          mainUI = ui;
+         
          FileStatus.reset(); 
          mainUIbaseTitle = mainUI.getTitle();
          newUsageCount = 0;
+         
       	// Directory from which MARS was launched. Guaranteed to have a value.
          defaultOpenDirectory = System.getProperty("user.dir");
          defaultSaveDirectory = System.getProperty("user.dir");

@@ -1,8 +1,9 @@
    package mars.venus.editors.jeditsyntax;
 
    import mars.venus.editors.jeditsyntax.tokenmarker.*; 
-   import mars.venus.editors.MARSTextEditingArea; 
-   import mars.venus.EditPane;
+   import mars.venus.editors.MARSTextEditingArea;
+import mars.venus.CustomFont;
+import mars.venus.EditPane;
    import mars.*;
    import java.awt.*;
    import javax.swing.event.*;
@@ -57,7 +58,7 @@
                }
             };
          this.getDocument().addUndoableEditListener(undoableEditListener); 
-         this.setFont(Globals.getSettings().getEditorFont());
+         this.setFont(CustomFont.CustomF());
          this.setTokenMarker(new MIPSTokenMarker());
       	
          addCaretListener(this);

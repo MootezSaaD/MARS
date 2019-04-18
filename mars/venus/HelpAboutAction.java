@@ -43,7 +43,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    		  
        public void actionPerformed(ActionEvent e){
           JOptionPane.showMessageDialog(mainUI,
-			              "MARS "+Globals.version+"    Copyright "+Globals.copyrightYears+"\n"+
+			              "MARS "+Globals.version+"Copyright "+Globals.copyrightYears+"\n"+
 							  Globals.copyrightHolders+"\n"+
 							  "MARS is the Mips Assembler and Runtime Simulator.\n\n"+
 							  "Mars image courtesy of NASA/JPL.\n"+
@@ -57,5 +57,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 							  "About Mars",
 							  JOptionPane.INFORMATION_MESSAGE,
 							  new ImageIcon("images/RedMars50.gif"));
+          
+          
       }
    }
