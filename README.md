@@ -12,5 +12,6 @@ Screenshot:
 
 # Limitations
 - Static theme : There is no option to switch between themes.
+- The font is loaded locally, so the user needs to change the path inside the source-code, it could be replaced with a link but it would slow the performance of the IDE.
 
 
