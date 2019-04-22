@@ -69,7 +69,36 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          UIManager.put("List.background", new Color(0x282B36));
          UIManager.put("List.foreground", Color.WHITE);
          
+         UIManager.put("Menu.selectionBackground", new Color(0x0D405B));
+         UIManager.put("Menu.selectionForeground", Color.WHITE);
          
+         UIManager.put("MenuItem.selectionBackground", new Color(0x0D405B));
+         UIManager.put("MenuItem.selectionForeground", Color.WHITE);
+         
+         
+         UIManager.put("CheckBoxMenuItem.selectionBackground", new Color(0x0D405B));
+         UIManager.put("CheckBoxMenuItem.border", BorderFactory.createLineBorder(new Color(0x051924), 2));
+         UIManager.put("CheckBoxMenuItem.selectionForeground", Color.WHITE);
+         
+         
+         UIManager.put("Menu.opaque", false);
+         
+         
+         
+         UIManager.put("PopupMenu.selectionBackground",new Color(0x0D405B));
+         UIManager.put("PopupMenu.border", BorderFactory.createLineBorder(new Color(0x282B36), 1));
+         UIManager.put("Menu.border", BorderFactory.createLineBorder(new Color(0x282B36), 1));
+         UIManager.put("CheckBoxMenuItem.background", new Color(0x051924));
+         UIManager.put("CheckBoxMenuItem.foreground", Color.WHITE);
+
+         UIManager.put("TabbedPane.selected", new Color(0x051924));
+         UIManager.put("TabbedPane.borderHightlightColor", new Color(0x282B36)); 
+         UIManager.put("TabbedPane.darkShadow", new Color(0x282B36)); 
+         UIManager.put("TabbedPane.light", new Color(0x282B36));
+         UIManager.put("TabbedPane.selectHighlight", new Color(0x282B36));
+         UIManager.put("TabbedPane.darkShadow", new Color(0x282B36));
+         UIManager.put("TabbedPane.focus", new Color(0x282B36));
+
          this.mainUI = appFrame;
          
          

@@ -4,20 +4,16 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -279,7 +275,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             cell.setHorizontalAlignment(alignment);
 	        	
 		         if (settings.getRegistersHighlighting() && highlighting && row==highlightRow) {
-		        	   cell.setBackground( new Color(0x282B36) );
+		        	   cell.setBackground( new Color(0x686a72) );
 		               cell.setForeground( new Color(0xF9F9F6) );
 							cell.setFont( CustomFont.CustomF() );
 		            } 

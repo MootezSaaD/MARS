@@ -7,10 +7,12 @@
    import java.io.*;
    import java.util.*;
    import java.awt.*;
-   import javax.swing.*;
-   import javax.swing.UIManager;
-   import javax.swing.plaf.metal.MetalLookAndFeel;
-   import javax.swing.JOptionPane;   // KENV 9/8/2004
+
+// KENV 9/8/2004
+import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+
+
 
 /*
 Copyright (c) 2003-2012,  Pete Sanderson and Kenneth Vollmar
@@ -39,7 +41,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 (MIT license, http://www.opensource.org/licenses/mit-license.html)
  */
-
+import com.*;
+ 
 /**
  * Launch the Mars application
  * 
@@ -245,7 +248,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   public void run() {
                      //Turn off metal's use of bold fonts
                      //UIManager.put("swing.boldMetal", Boolean.FALSE);
-                      
+                	
+                    
                      try {
 						new VenusUI("MARS "+Globals.version);
 					} catch (Exception e) {

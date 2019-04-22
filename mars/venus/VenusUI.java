@@ -15,6 +15,7 @@ import java.awt.event.WindowEvent;
 import java.net.URL;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -29,7 +30,6 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
@@ -142,14 +142,24 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          super(s);
          
          UIManager.put("TabbedPane.selected", new Color(0x3D404A));
+         UIManager.put("TabbedPane.border", new Color(0x3D404A));
          mainUI = this;
-         
+
          Globals.setGui(this);
          this.editor = new Editor(this);
       	mainUI.setBackground(new Color(0x282B36));
       	this.getContentPane().setBackground(new Color(0x282B36));
       
-      	
+        UIManager.put("TabbedPane.selected", new Color(0x051924));
+        UIManager.put("TabbedPane.borderHightlightColor", new Color(0x282B36)); 
+        UIManager.put("TabbedPane.darkShadow", new Color(0x282B36)); 
+        UIManager.put("TabbedPane.light", new Color(0x282B36));
+        UIManager.put("TabbedPane.selectHighlight", new Color(0x282B36));
+        UIManager.put("TabbedPane.darkShadow", new Color(0x282B36));
+        UIManager.put("TabbedPane.focus", new Color(0x282B36));
+        UIManager.put("TableHeader.cellBorder", new Color(0x282B36));
+        UIManager.put("Pane.Border", new Color(0x282B36));
+        
          double screenWidth  = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
          double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
          // basically give up some screen space if running at 800 x 600
@@ -559,8 +569,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          Toolkit tk = Toolkit.getDefaultToolkit();
          Class cs = this.getClass(); 
          JMenuBar menuBar = new JMenuBar();
-         UIManager.put("MenuItem.background", new Color(0x282B36));
+         UIManager.put("MenuItem.background", new Color(0x051924));
          UIManager.put("MenuItem.foreground", new Color(0xF9F9F6));
+         UIManager.put("MenuItem.border",BorderFactory.createLineBorder(new Color(0x282B36), 1));
          file=new JMenu("File");
          file.setMnemonic(KeyEvent.VK_F);
          edit = new JMenu("Edit");
@@ -611,16 +622,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          file.add(fileOpen);
          file.add(fileClose);
          file.add(fileCloseAll);
-         file.addSeparator();
+        // file.addSeparator();
          file.add(fileSave);
          file.add(fileSaveAs);
          file.add(fileSaveAll);
          if (new mars.mips.dump.DumpFormatLoader().loadDumpFormats().size() > 0) {
             file.add(fileDumpMemory);
          }
-         file.addSeparator();
+        // file.addSeparator();
          file.add(filePrint);
-         file.addSeparator();
+       //  file.addSeparator();
          file.add(fileExit);
       	 file.setForeground( new Color(0xF9F9F6));
          editUndo = new JMenuItem(editUndoAction);
@@ -639,11 +650,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          editSelectAll.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"MyBlank16.gif"))));
          edit.add(editUndo);
          edit.add(editRedo);
-         edit.addSeparator();
+         //edit.addSeparator();
          edit.add(editCut);
          edit.add(editCopy);
          edit.add(editPaste);
-         edit.addSeparator();
+       //  edit.addSeparator();
          edit.add(editFindReplace);
          edit.add(editSelectAll);
          edit.setForeground( new Color(0xF9F9F6));
@@ -673,12 +684,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          run.add(runPause);
          run.add(runStop);
          run.add(runReset);
-         run.addSeparator();
+         
          run.add(runClearBreakpoints);
          run.add(runToggleBreakpoints);
       	 run.setForeground( new Color(0xF9F9F6));
+      	 
          settingsLabel = new JCheckBoxMenuItem(settingsLabelAction);
          settingsLabel.setSelected(Globals.getSettings().getLabelWindowVisibility());
+         
          settingsPopupInput = new JCheckBoxMenuItem(settingsPopupInputAction);
          settingsPopupInput.setSelected(Globals.getSettings().getBooleanSetting(Settings.POPUP_SYSCALL_INPUT));
          settingsValueDisplayBase = new JCheckBoxMenuItem(settingsValueDisplayBaseAction);
@@ -715,16 +728,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          settings.add(settingsPopupInput);
          settings.add(settingsAddressDisplayBase);
          settings.add(settingsValueDisplayBase);
-         settings.addSeparator();
+         //settings.addSeparator();
          settings.add(settingsAssembleOnOpen);
          settings.add(settingsAssembleAll);
          settings.add(settingsWarningsAreErrors);
          settings.add(settingsStartAtMain);
-         settings.addSeparator();
+         //settings.addSeparator();
          settings.add(settingsExtended);
          settings.add(settingsDelayedBranching);
          settings.add(settingsSelfModifyingCode);
-         settings.addSeparator();
+         //settings.addSeparator();
          settings.add(settingsEditor);
          settings.add(settingsHighlighting);
          settings.add(settingsExceptionHandler);
@@ -735,7 +748,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          helpAbout = new JMenuItem(helpAboutAction);
          helpAbout.setIcon(new ImageIcon(tk.getImage(cs.getResource(Globals.imagesPath+"MyBlank16.gif"))));
          help.add(helpHelp);
-         help.addSeparator();
+        // help.addSeparator();
          help.add(helpAbout);
          help.setForeground(new Color(0xF9F9F6));
          menuBar.add(file);
@@ -747,6 +760,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          if (toolMenu != null) menuBar.add(toolMenu);
          menuBar.add(help);
       	menuBar.setBackground( new Color(0x282B36));
+      	
       	menuBar.setBorderPainted(false);
       	
       	// experiment with popup menu for settings. 3 Aug 2006 PS

@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Implementation-Title: IconLoader
+Implementation-Version: 1.0.0
+Implementation-URL: http://bulenkov.com
+Implementation-Vendor: Konstantin Bulenkov
+

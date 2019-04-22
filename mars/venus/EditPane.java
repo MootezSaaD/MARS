@@ -70,7 +70,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          super(new BorderLayout());
          UIManager.put("TabbedPane.selected", new Color(0x3D404A));   
          
-
+         
          this.setForeground(Color.white);
          this.mainUI = appFrame;
         
@@ -188,11 +188,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       
          JPanel editInfo = new JPanel(new BorderLayout());
          caretPositionLabel = new JLabel();
+         caretPositionLabel.setBackground(Color.white);
          caretPositionLabel.setToolTipText("Tracks the current position of the text editing cursor.");
          displayCaretPosition(new Point());
          editInfo.add(caretPositionLabel,BorderLayout.WEST);
-         editInfo.add(showLineNumbers,BorderLayout.CENTER);
-         //editInfo.setBackground(Color.BLACK);
+         
+      //   editInfo.add(showLineNumbers,BorderLayout.CENTER);
+         editInfo.setBackground(new Color(0x282B36));
+         editInfo.setBorder(null);
          this.add(editInfo,BorderLayout.SOUTH);
          
          
@@ -468,6 +471,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    	  */
       public void displayCaretPosition(Point p) {
          caretPositionLabel.setText("Line: "+ p.y + " Column: "+ p.x);
+         
       }
    
      	 /**

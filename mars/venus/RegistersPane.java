@@ -57,24 +57,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
        public RegistersPane(VenusUI appFrame, RegistersWindow regs, Coprocessor1Window cop1,
 		                      Coprocessor0Window cop0){
          super();
-         UIManager.put("TabbedPane.selected", new Color(0x282B36));
+  
          this.mainUI = appFrame;
          mainUI.getContentPane().setBackground(new Color(0x3D404A));
-         
+         this.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 			regsTab = regs;
 			cop1Tab = cop1;
 			cop0Tab = cop0;
 			regsTab.setVisible(true);
 			cop1Tab.setVisible(true);
 			cop0Tab.setVisible(true);
+			
 			this.setBackground(new Color(0x282B36));
 			this.setForeground(Color.white);
          this.addTab("Registers", regsTab);
 			this.addTab("Coproc 1", cop1Tab);
 			this.addTab("Coproc 0", cop0Tab);
          this.setToolTipTextAt(0,"CPU registers");
+         
 			this.setToolTipTextAt(1,"Coprocessor 1 (floating point unit) registers");
 			this.setToolTipTextAt(2,"selected Coprocessor 0 (exceptions and interrupts) registers");
+			
 			
       }
    	

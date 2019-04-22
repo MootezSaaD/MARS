@@ -64,6 +64,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      */
        public Editor(VenusUI ui) {
     	   UIManager.put("TabbedPane.selected", new Color(0x3D404A));
+    	   
+
          mainUI = ui;
          
          FileStatus.reset(); 
