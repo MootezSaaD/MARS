@@ -1,8 +1,10 @@
 
 # MARS-BlackEdition
-🔭 A customized MARS IDE with black Theme under the ISS296 course at MedTech.
+A customized MARS IDE with black Theme under the ISS296 course at MedTech.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A fork of [MARS](http://courses.missouristate.edu/KenVollmar/mars/)
+
+A fork of [MARS](http://courses.missouristate.edu/KenVollmar/mars/)_
 Screenshot:
 ![alt text](https://i.imgur.com/kvD1kzq.png)
 
