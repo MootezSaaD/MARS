@@ -7,7 +7,7 @@ Screenshot:
 ![alt text](https://i.imgur.com/kvD1kzq.png)
 
 # Modifications
-- Replaced the defaults fonts with Monaco Font.
+- Replaced the default fonts with [Monaco](https://github.com/todylu/monaco.ttf) Font.
 - Changed default Java SWING colors with a dark theme.
 
 # Limitations
