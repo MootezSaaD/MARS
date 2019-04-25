@@ -855,12 +855,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             if (highlighting && textSegment.getIntCodeAddressAtRow(row) == highlightAddress) {
                if (mars.simulator.Simulator.inDelaySlot() || textSegment.inDelaySlot) {
             	   cell.setBackground( new Color(0x5F6066) );
-	               cell.setForeground( new Color(0xF9F9F6) );
+	               cell.setForeground( new Color(0x292929) );
 						cell.setFont( CustomFont.CustomF() );
                } 
                else {
-            	   cell.setBackground( new Color(0x282B36) );
-	               cell.setForeground( new Color(0xF9F9F6) );
+            	   cell.setBackground( new Color(0xcfcfd1) );
+	               cell.setForeground( new Color(0x292929) );
 						cell.setFont( CustomFont.CustomF() );
                }
             } 
